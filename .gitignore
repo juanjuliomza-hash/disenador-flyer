@@ -1,0 +1,25 @@
+# ---- Artefactos pesados que no deben versionarse ----
+# 2 MB de base64: quedó sin uso al pasar a servidor local (se puede borrar).
+assets-inline.js
+
+# Renders de vista previa (se regeneran exportando desde el editor)
+Vista previa*.png
+*.export.png
+salida/
+
+# Originales del usuario: ya están copiados en assets/
+WOLF IT/
+
+# ---- Proyectos locales ----
+# Los .flyer.json de trabajo son personales; versioná solo los que quieras
+# compartir como plantilla, con: git add -f plantillas/loquesea.flyer.json
+*.flyer.json
+!plantillas/*.flyer.json
+
+# ---- Sistema ----
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+.vscode/
+.idea/
