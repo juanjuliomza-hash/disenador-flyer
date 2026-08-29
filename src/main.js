@@ -15,6 +15,9 @@ const store = new Store();
 let view = null;
 let toastTimer = null;
 let exportOpts = { format: "png", scale: 2, transparent: false };
+/* true en cuanto el usuario hace zoom o paneo: a partir de ahí dejamos de
+   reajustar solo el lienzo cuando cambia el tamaño de la ventana. */
+let zoomManual = false;
 
 /* ---------------- utilidades de interfaz ---------------- */
 function toast(msg, bad){
@@ -48,7 +51,7 @@ async function boot(){
 
   view = new StageView($("viewport"), store);
   view.onCreate = onCanvasCreate;
-  view.onView = () => updateStatus();
+  view.onView = () => { zoomManual = true; updateStatus(); };
 
   await preloadScene(store.scene);
   view.render();
@@ -67,15 +70,12 @@ async function boot(){
 
   window.addEventListener("resize", () => { view.resize(); updateStatus(); });
 
-  /* El primer fit() puede correr antes de que el layout tenga ancho real
-     (el lienzo quedaría en 2%). Se reajusta en cuanto el viewport mide algo. */
-  let ajustado = $("viewport").clientWidth > 0;
+  /* El lienzo se mantiene ajustado mientras cambia el tamaño de la ventana,
+     hasta que hacés zoom o paneo a mano. Sin esto, si el primer ajuste corre
+     con el layout todavía angosto, el lienzo queda clavado en 2%. */
   new ResizeObserver(() => {
     view.resize();
-    if (!ajustado && $("viewport").clientWidth > 0){
-      ajustado = true;
-      view.fit();
-    }
+    if (!zoomManual && $("viewport").clientWidth > 0) view.fit();
     updateStatus();
   }).observe($("viewport"));
 
@@ -328,8 +328,9 @@ function bindToolbar(){
   Object.entries(A).forEach(([id, mode]) => $(id).addEventListener("click", () => align(mode)));
 
   /* --- zoom --- */
-  $("btn-fit").addEventListener("click", () => { view.fit(); updateStatus(); });
-  $("btn-1to1").addEventListener("click", () => { view.zoomTo(1); updateStatus(); });
+  /* "Ajustar" vuelve al modo automático; "1:1" es una decisión del usuario. */
+  $("btn-fit").addEventListener("click", () => { zoomManual = false; view.fit(); updateStatus(); });
+  $("btn-1to1").addEventListener("click", () => { zoomManual = true; view.zoomTo(1); updateStatus(); });
   $("chk-snap").addEventListener("change", e => { view.snapEnabled = e.target.checked; });
 }
 
@@ -463,8 +464,8 @@ function bindKeyboard(){
       syncLayers();
       return;
     }
-    if (mod && e.key === "0"){ e.preventDefault(); view.fit(); updateStatus(); return; }
-    if (mod && e.key === "1"){ e.preventDefault(); view.zoomTo(1); updateStatus(); return; }
+    if (mod && e.key === "0"){ e.preventDefault(); zoomManual = false; view.fit(); updateStatus(); return; }
+    if (mod && e.key === "1"){ e.preventDefault(); zoomManual = true; view.zoomTo(1); updateStatus(); return; }
 
     if (editing) return;
 

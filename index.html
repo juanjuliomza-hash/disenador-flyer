@@ -70,6 +70,10 @@
   .prow .num::-webkit-outer-spin-button,
   .prow .num::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
   .prow .num{-moz-appearance:textfield; appearance:textfield;}
+  /* Filas de dos valores (Ancho/Alto, X/Y): la etiqueta fija de 74px no dejaba
+     lugar y los números quedaban cortados. Acá la etiqueta se ajusta al texto. */
+  .prow.compact label{width:auto; flex:0 0 auto;}
+  .prow.compact .num{width:72px; flex:1 1 auto; min-width:0;}
   .hint{color:var(--muted); font-size:11px; line-height:1.45;}
   .two{display:flex; gap:6px;} .two > *{flex:1 1 auto;}
 
@@ -285,9 +289,9 @@
         <h3>Escena</h3>
         <div class="prow"><label>Nombre</label><input type="text" id="p-name"></div>
         <div class="prow"><label>Formato</label><select id="p-preset"></select></div>
-        <div class="prow">
+        <div class="prow compact">
           <label>Ancho</label><input type="number" id="p-w" class="num" min="50" max="8000">
-          <label style="width:34px">Alto</label><input type="number" id="p-h" class="num" min="50" max="8000">
+          <label>Alto</label><input type="number" id="p-h" class="num" min="50" max="8000">
         </div>
         <div class="prow"><label>Fondo</label>
           <select id="p-bgtype">
@@ -306,13 +310,13 @@
 
       <div class="panel-section" id="sec-common" style="display:none">
         <h3>Posición <span id="sel-count" class="hint"></span></h3>
-        <div class="prow">
+        <div class="prow compact">
           <label>X</label><input type="number" id="p-x" class="num">
-          <label style="width:20px">Y</label><input type="number" id="p-y" class="num">
+          <label>Y</label><input type="number" id="p-y" class="num">
         </div>
-        <div class="prow">
+        <div class="prow compact">
           <label>Ancho</label><input type="number" id="p-elw" class="num" min="1">
-          <label style="width:34px">Alto</label><input type="number" id="p-elh" class="num" min="1">
+          <label>Alto</label><input type="number" id="p-elh" class="num" min="1">
         </div>
         <div class="prow"><label>Rotación</label><input type="range" id="p-rot" min="-180" max="180" step="1"><input type="number" id="p-rotn" class="num"></div>
         <div class="prow"><label>Opacidad</label><input type="range" id="p-op" min="0" max="1" step="0.01"><input type="number" id="p-opn" class="num" min="0" max="1" step="0.05"></div>
