@@ -95,6 +95,24 @@ se aplica a los diseños siguientes sin repetirlo. Ese archivo es el modelo de d
 
 ---
 
+## API keys
+
+Hoy el editor **no usa ninguna API ni sale a internet**: es todo local.
+
+Cuando se agregue la generación de plantillas por IA, la clave va a seguir la misma
+regla que usa Calqo, y que es la única correcta para una app estática:
+
+- La clave la escribe cada usuario en un campo de configuración y **queda guardada
+  en su propio navegador** (`localStorage`), en su máquina.
+- **Nunca** se escribe en el código, ni en un archivo del repo, ni dentro de un
+  proyecto `.flyer.json` exportado.
+- El `.gitignore` ya bloquea `.env`, `config.local.js`, `*.key` y compañía, para que
+  ni por error entre una.
+
+> Consecuencia de ser una app 100 % de navegador: la clave que ponés viaja desde tu
+> navegador a la API del proveedor. Es tu clave y tu máquina, pero por eso conviene
+> usar una key con límite de gasto, no la principal de la cuenta.
+
 ## Estructura
 
 ```

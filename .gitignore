@@ -16,6 +16,18 @@ WOLF IT/
 *.flyer.json
 !plantillas/*.flyer.json
 
+# ---- Claves y secretos: NUNCA versionar ----
+# Este es un repo público. Las API keys viven en el navegador de cada usuario
+# (ver README, sección "API keys"), jamás en el código.
+.env
+.env.*
+config.local.js
+config.local.json
+secretos/
+*.key
+*.pem
+credentials.json
+
 # ---- Sistema ----
 Thumbs.db
 desktop.ini
